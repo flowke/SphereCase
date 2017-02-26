@@ -8,7 +8,7 @@
     <title>Document</title>
     <style>
 
-        body, html{height: 100%; width: 100%; margin: 0; font-family: 'Microsoft YaHei'}
+        body, html{height: 100%; width: 100%;  font-family: 'Microsoft YaHei'}
         #root{ width: 100%; height: 100%;}
         #root img{width: 100%; height: 100%;}
         canvas, #fontSphere, #fontEmitter{position: absolute; margin: 0; left: 0; top:0; bottom:0; right: 0;}
@@ -17,23 +17,23 @@
 
         #fontSphere a {position: absolute; left: 0; top: 0;  color: #fff;}
 
-        
-        #fontEmitter{ position: absolute; perspective: 600px; width: 45%; height: 70%; left: auto;}
+
+        #fontEmitter{ position: absolute; perspective: 600px; width: 45%; height: 70%; left: auto; }
 
         #fontEmitter .container.ca{ transform-style: preserve-3d; width: 100%; height: 100%; }
 
-        #fontEmitter .container.cb{ position: absolute; top: 0; left: 0; transform-style: preserve-3d; width: 100%; height: 100%; }
+        #fontEmitter .container.cb{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
         #fontEmitter .container div{ position: absolute; display: inline-block; bottom: 0; left: 50px;  perspective: 600px; }
 
-        .container a{ display: inline-block; color: white; font-size: 10px; cursor: pointer; transform-style: preserve-3d; text-decoration: none; }
+        .container a{ display: block; color: white; font-size: 10px; cursor: pointer; transform-style: preserve-3d; text-decoration: none; }
 
 
 
-        div.move{ animation: move 2.2s  linear infinite; pointer-events: none; perspective-origin: 90% 50%;}
+        div.move{ animation: move 2.2s linear infinite; pointer-events: none; perspective-origin: 90% 50%;}
         a.rotate{ animation: rotate 2.2s linear infinite; pointer-events: none;}
 
-        div.hovMov{ font-size: 16px; transform: rotateZ(-40deg);  padding: 5px; bottom: 0px; left: 0; }
+        div.hovMov{ font-size: 16px; transform: rotateZ(-40deg);  padding: 5px;  }
 
         div.hovMov.ma{animation: hovMov 6.2s 4s linear infinite; opacity: 0;}
         div.hovMov.mb{animation: hovMov 6.2s linear infinite;}
@@ -93,7 +93,7 @@
         }
 
         @keyframes hovMov {
-            from{opacity: 0;}
+            from{opacity: 0; }
             20%{opacity: 1;}
             to{transform: translate3d(240px,-180px, -250px); opacity: 0;}
         }

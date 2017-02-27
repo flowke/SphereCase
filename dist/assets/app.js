@@ -59997,15 +59997,37 @@ var lights = base.initLight();
 tool.sceneAdd(scene, lights);
 
 var ray = base.createRay();
+
 var mouse = tool.setMouse(-sceneHeight / 2, sceneHeight / 2);
 // 网格模型
 
-var icoMeshes = base.getPiecesMesh(base.getIco(2, 2));
-tool.sceneAdd(scene, icoMeshes);
+// let icoMeshes = base.getPiecesMesh(base.getIco(2,2));
 
-var _base$initSmallSphere = base.initSmallSphereScene(scene),
-    normalIco1 = _base$initSmallSphere.normalIco1,
-    normalIco3 = _base$initSmallSphere.normalIco3;
+// tool.sceneAdd(scene, icoMeshes);
+
+var icoMesh = base.getNormalIco(2, 2, 0xfc475b);
+
+scene.add(icoMesh);
+
+function sphereBounceAni(mesh) {
+    var start = {
+        scale: 0
+    };
+
+    var end = {
+        scale: 1
+    };
+
+    new TWEEN.Tween(start).to(end, 1000).easing(TWEEN.Easing.Bounce.Out).onUpdate(function () {
+        // console.log(this.scale)
+        icoMesh.scale.x = this.scale;
+        icoMesh.scale.y = this.scale;
+        icoMesh.scale.z = this.scale;
+    }).start();
+}
+
+// let {normalIco1,normalIco3} = base.initSmallSphereScene(scene);
+
 // let normalIco = base.getNormalIco(1,1,#000000)
 
 // let {mesh: extIco , material} = base.getSphere();
@@ -60032,17 +60054,17 @@ var _base$initSmallSphere = base.initSmallSphereScene(scene),
 
 
 // 把对象添加到场景
+// icoMeshes.forEach((elt)=>{
+//     elt.rotation.y = -1* Math.PI/180*90;
+//     elt.rotation.x = -1* Math.PI/180*195;
+//     elt.rotation.z = Math.PI/180*45;
+//
+//     setTimeout(()=>{
+//         reAni = icoRotation;
+//     }, 2900);
+//
+// })
 
-
-icoMeshes.forEach(function (elt) {
-    elt.rotation.y = -1 * Math.PI / 180 * 90;
-    elt.rotation.x = -1 * Math.PI / 180 * 195;
-    elt.rotation.z = Math.PI / 180 * 45;
-
-    setTimeout(function () {
-        reAni = icoRotation;
-    }, 2900);
-});
 
 function reAni() {}
 
@@ -60092,7 +60114,8 @@ function piecesAnimate(meshes) {
         }, i * 16);
     });
 }
-piecesAnimate(icoMeshes);
+// piecesAnimate(icoMeshes)
+
 
 var clock = new THREE.Clock();
 
@@ -60109,17 +60132,17 @@ function animate() {
 }
 
 var time = 0;
-
+sphereBounceAni(icoMesh);
 function render() {
     var delta = clock.getDelta();
     trackballControls.update(delta);
 
-    reAni(icoMeshes);
+    // reAni(icoMeshes)
     TWEEN.update();
 
-    normalIco1.position.x += Math.sin(time++ / 175) / 180;
-    normalIco1.position.z += Math.sin(time++ / 275) / 220;
-    normalIco3.position.y += Math.cos(time++ / 185) / 250;
+    // normalIco1.position.x += Math.sin(time++/175)/180
+    // normalIco1.position.z += Math.sin(time++/275)/220
+    // normalIco3.position.y += Math.cos(time++/185)/250
 
     // fontUpdate();
     renderer.render(scene, camera);

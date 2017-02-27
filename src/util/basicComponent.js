@@ -246,9 +246,11 @@ module.exports = {
         // mesh.rotateY(Math.PI);
         return {mesh, uniforms};
     },
+
     getIco(r, d){
         return new THREE.IcosahedronGeometry(r,d);
     },
+
     getNormalIco(r,d, color){
         let geo = new THREE.IcosahedronGeometry(r,d);
         let mesh = new THREE.Mesh( geo, new THREE.MeshPhongMaterial({

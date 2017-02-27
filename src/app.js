@@ -4,7 +4,7 @@ const TWEEN = require('tween.js');
 const tool = require('util/tool');
 let line = require('util/line');
 
-const fontUpdate = require('module/sphereFont');
+// const fontUpdate = require('module/sphereFont');
 // const fontUpdate = require('module/cssFontSphere');
 const module = require('module/fontEmitter');
 
@@ -58,14 +58,29 @@ let {normalIco1,normalIco3} = base.initSmallSphereScene(scene);
 
 
 // 把对象添加到场景
+icoMeshes.forEach((elt)=>{
+    elt.rotation.y = -1* Math.PI/180*90;
+    elt.rotation.x = -1* Math.PI/180*195;
+    elt.rotation.z = Math.PI/180*45;
+
+    setTimeout(()=>{
+        reAni = icoRotation;
+    }, 2900);
+
+})
+
+
+
+function reAni(){}
+
 
 
 
 function icoRotation(meshes){
     meshes.forEach((elt)=>{
-        elt.rotation.y += 0.005;
-        elt.rotation.x -= 0.005;
-        elt.rotation.z -= 0.005;
+        elt.rotation.y += 0.002;
+        elt.rotation.x -= 0.002;
+        elt.rotation.z -= 0.002;
     })
 }
 
@@ -139,14 +154,15 @@ let time = 0;
 function render(){
     let delta = clock.getDelta();
     trackballControls.update(delta);
-    icoRotation(icoMeshes);
+
+    reAni(icoMeshes)
     TWEEN.update();
 
     normalIco1.position.x += Math.sin(time++/175)/180
     normalIco1.position.z += Math.sin(time++/275)/220
     normalIco3.position.y += Math.cos(time++/185)/250
 
-    fontUpdate();
+    // fontUpdate();
     renderer.render(scene, camera);
 }
 // render();

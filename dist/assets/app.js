@@ -1427,302 +1427,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TWEEN = __webpack_require__(0);
-
-var items = ['js原理', '正则表达式', '反倒是', '电风扇水电费', '发短信无法', '富兰克林', '妇女节老师', '反对虐杀', 'vwfsfdfsf'];
-items = items.concat(items, items, items, items);
-
-var pCount = 20,
-    nodeIndx = 0,
-    perDuration = 2500,
-    inHold = false,
-    canvas = document.querySelector('#fontEmitter .container.ca');
-
-var nodePool = [];
-nodePool.own = 0;
-var canvas2 = document.querySelector('#fontEmitter .container.cb');
-var stage = document.querySelector('#fontEmitter');
-
-run();
-
-function run() {
-    setTimeout(function () {
-        clickNode('ma');
-        clickNode('mb');
-        for (var i = 0; i < pCount; i++) {
-            setTimeout(function () {
-                getFromNodePool();
-            }, Math.random() * 20000);
-        }
-    }, 5000);
-}
-
-function clickNode(n) {
-    var wrap = document.createElement('div'),
-        hover = document.createElement('a');
-
-    wrap.appendChild(hover);
-    wrap.className = 'hovMov ' + n;
-    hover.className = 'hov';
-    hover.href = "#";
-    hover.innerHTML = items[nodeIndx % items.length];
-    nodeIndx++;
-    canvas2.appendChild(wrap);
-    wrap.addEventListener("animationiteration", ani);
-    function ani() {
-        nodeIndx++;
-        hover.innerHTML = items[nodeIndx % items.length];
-    }
-}
-
-function getFromNodePool() {
-
-    if (!nodePool.lenght) {
-        var ani = function ani() {
-            // nodePool.push(move);
-
-
-            resetOne(move);
-        };
-
-        nodePool.own++;
-        if (nodePool.own > pCount) {
-            return null;
-        }
-
-        var wrap = document.createElement('div'),
-            move = document.createElement('div'),
-            rotate = document.createElement('a');
-
-        move.appendChild(rotate);
-
-        wrap.className = 'directionWrap';
-        wrap.style.transform = 'rotateZ(' + (0.5 - Math.random()) * 60 + 'deg)';
-
-        move.sub = rotate;
-        move.addEventListener("animationiteration", ani);
-
-
-        nodePool.push(move);
-    }
-
-    var node = nodePool.shift();
-
-    resetOne(node);
-
-    canvas.appendChild(node);
-    return node;
-}
-
-function resetOne(node) {
-    node.style.transform = 'scale(' + (Math.random() * 1.4 + 0.1) + ') translate3d(0px,' + -1 * (Math.random() * 50) + 'px,0px)';
-
-    node.style.left = Math.random() * 50 + 'px';
-    node.style.bottom = Math.random() * 150 + 'px';
-    node.className = 'move';
-    node.sub.className = 'rotate';
-    node.sub.innerHTML = items[nodeIndx % items.length];
-    nodeIndx++;
-}
-
-var emitPos = {
-    x: 0,
-    y: canvas.clientHeight
-};
-
-var starPoint = [{ x: emitPos.x, y: emitPos.y - 100 }, { x: emitPos.x, y: emitPos.y - 50 }, { x: emitPos.x + 50, y: emitPos.y }, { x: emitPos.x + 50, y: emitPos.y - 50 }];
-
-var endPoint = [{ x: emitPos.x + 220, y: emitPos.y - 100 }, { x: emitPos.x + 240, y: emitPos.y - 150 }, { x: emitPos.x + 200, y: emitPos.y - 220 }, { x: emitPos.x + 280, y: emitPos.y - 150 }];
-
-// firstRound();
-
-function firstRound() {
-    var i = 0;
-    var timer = setInterval(function () {
-        i++;
-        if (i > pCount) {
-            clearInterval(timer);
-        }
-
-        emitOne();
-
-        // console.log(i)
-    }, 1500);
-}
-
-function emitOne() {
-    var node = getNode();
-
-    if (node === null) {
-        console.log('等待生产');
-        return;
-    }
-    animateWidthPath(node);
-}
-
-function getNode() {
-
-    if (!nodePool.length) {
-
-        if (nodePool.own > pCount) {
-            return null;
-        }
-
-        nodePool.own++;
-        var _node = document.createElement('a');
-
-        _node.additionProperty = {
-            inHold: false,
-            opacity: 0,
-            pos: { x: emitPos.x, y: emitPos.y },
-            vec2: {
-                x: Math.random(),
-                y: Math.random()
-            }
-        };
-
-        _node.onmouseover = function () {
-            this.inHold = true;
-            this.tween1.stop();
-            this.tween2.stop();
-            // this.className = 'animated swing';
-
-        };
-        _node.onmouseout = function () {
-            this.inHold = false;
-            this.tween1.start();
-            this.tween2.start();
-            this.className = '';
-        };
-
-        nodePool.push(_node);
-    }
-
-    var node = nodePool.shift();
-
-    node.innerHTML = items[nodeIndx % items.length];
-
-    var x = starPoint[nodeIndx % starPoint.length].x;
-    var y = starPoint[nodeIndx % starPoint.length].y;
-    node.style.left = x;
-    node.style.left = y;
-    node.style.fontSize = Math.random() * 3 + 9 + 'px';
-
-    node.className = 'tran1';
-
-    nodeIndx++;
-
-    node.additionProperty.pos = { x: x, y: y };
-
-    canvas.appendChild(node);
-
-    return node;
-}
-
-function animateWidthPath(node) {
-
-    var sTime = Date.now();
-
-    var addiP = node.additionProperty;
-
-    var start = {
-        opacity: 0,
-        x: addiP.pos.x,
-        y: addiP.pos.y,
-        rotation: -70
-    };
-
-    var ep = endPoint[nodeIndx % endPoint.length];
-
-    var end = {
-        opacity: 0,
-        x: ep.x,
-        y: ep.y,
-        rotation: -60
-    };
-
-    // console.log(end.x,end.y)
-    var mid = {
-        x: 300 + (0.5 - Math.random() * 80),
-        y: 180 + (0.5 - Math.random() * 130),
-        opacity: 0.7,
-        rotation: 0
-    };
-
-    node.tween1 = new TWEEN.Tween(start).to(mid, 3000).easing(TWEEN.Easing.Linear.None).onUpdate(function () {
-
-        // node.style.left = this.x+'px';
-        // node.style.top = this.y+'px';
-        // node.style.opacity = this.opacity;
-        // node.style.transform = 'rotate('+ this.rotation +'deg)';
-
-    });
-
-    node.tween2 = new TWEEN.Tween(mid).to(end, 2500).easing(TWEEN.Easing.Linear.None).onUpdate(function () {
-
-        // node.style.left = this.x+'px';
-        // node.style.top = this.y+'px';
-        // node.style.opacity = this.opacity;
-        // node.style.transform = 'rotate('+ this.rotation +'deg)'
-
-    }).onComplete(function () {
-        canvas.removeChild(node);
-        nodePool.push(node);
-        setTimeout(function () {
-            emitOne();
-        }, Math.random * 2000);
-    });
-
-    node.tween1.chain(node.tween2);
-    // node.tween2.chain(node.tween1);
-    node.tween1.start();
-
-    // let timer = setInterval(()=>{
-    //
-    //     if(Date.now()-sTime > perDuration){
-    //         clearInterval(timer);
-    //         nodePool.push(node);
-    //         canvas.removeChild(node);
-    //     }
-    //
-    //     if(node.inHold===true){
-    //         clearInterval(timer);
-    //         node.className = 'f-hold';
-    //     }
-    //
-    //     curtPos.x += vec2.x ;
-    //     curtPos.y += vec2.y ;
-    //
-    //     node.style.left = curtPos.x;
-    //     node.style.top = curtPos.y;
-    //
-    //
-    // }, 20);
-}
-
-function getRandomOriPos() {
-    var seed = 40;
-
-    return {
-        x: Math.random() * seed,
-        y: canvas.clientHeight + (0.5 - Math.random()) * seed
-    };
-}
-// stage.style.background = 'red'
-stage.style.width = window.innerWidth / 2 - window.innerHeight * 1 / 7 + 'px';
-// console.log(window.innerWidth)
-window.onWindowResize = function () {
-    stage.style.width = window.innerWidth / 2 - window.innerHeight * 2 / 7 + 'px';
-    stage.style.height = window.innerHeight / 2 + 'px';
-};
-
-/***/ }),
+/* 5 */,
 /* 6 */,
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1952,7 +1657,9 @@ group.position.z = -600;
 
 setTimeout(function (elt) {
     scaLine();
-}, 2500);
+}, 200);
+
+// scaLine();
 
 function scaLine() {
     var start = {
@@ -59975,7 +59682,7 @@ var line = __webpack_require__(7);
 
 // const fontUpdate = require('module/sphereFont');
 // const fontUpdate = require('module/cssFontSphere');
-var _module = __webpack_require__(5);
+// const module = require('module/fontEmitter');
 
 var sceneWidth = window.innerWidth,
     sceneHeight = window.innerHeight;
@@ -60007,6 +59714,8 @@ var mouse = tool.setMouse(-sceneHeight / 2, sceneHeight / 2);
 
 var icoMesh = base.getNormalIco(2, 2, 0xfc475b);
 
+icoMesh.scale.set(0.001, 0.001, 0.001);
+
 scene.add(icoMesh);
 
 function sphereBounceAni(mesh) {
@@ -60015,15 +59724,33 @@ function sphereBounceAni(mesh) {
     };
 
     var end = {
-        scale: 1
+        scale: 0.5
     };
 
-    new TWEEN.Tween(start).to(end, 1000).easing(TWEEN.Easing.Bounce.Out).onUpdate(function () {
+    var t1 = new TWEEN.Tween(start).to(end, 600).easing(TWEEN.Easing.Sinusoidal.In).onUpdate(function () {
         // console.log(this.scale)
         icoMesh.scale.x = this.scale;
         icoMesh.scale.y = this.scale;
         icoMesh.scale.z = this.scale;
-    }).start();
+    });
+
+    var t2 = new TWEEN.Tween({ s: 0.5 }).to({ s: 1 }, 1500).easing(TWEEN.Easing.Elastic.Out).onUpdate(function () {
+        var s = this.s;
+
+
+        icoMesh.scale.set(s, s, s);
+    });
+
+    t1.chain(t2);
+    t1.start();
+}
+sphereBounceAni(icoMesh);
+// icoRotate(mesh);
+
+function icoRotate(mesh) {
+    mesh.rotation.y -= 0.002;
+    mesh.rotation.x -= 0.002;
+    mesh.rotation.z -= 0.002;
 }
 
 // let {normalIco1,normalIco3} = base.initSmallSphereScene(scene);
@@ -60132,12 +59859,12 @@ function animate() {
 }
 
 var time = 0;
-sphereBounceAni(icoMesh);
+
 function render() {
     var delta = clock.getDelta();
     trackballControls.update(delta);
 
-    // reAni(icoMeshes)
+    icoRotate(icoMesh);
     TWEEN.update();
 
     // normalIco1.position.x += Math.sin(time++/175)/180
@@ -60148,6 +59875,7 @@ function render() {
     renderer.render(scene, camera);
 }
 // render();
+
 animate();
 
 window.addEventListener('resize', onWindowResize, false);

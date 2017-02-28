@@ -6,7 +6,7 @@ let line = require('util/line');
 
 // const fontUpdate = require('module/sphereFont');
 // const fontUpdate = require('module/cssFontSphere');
-const module = require('module/fontEmitter');
+// const module = require('module/fontEmitter');
 
 let sceneWidth = window.innerWidth,
     sceneHeight = window.innerHeight;
@@ -34,7 +34,7 @@ let mouse = tool.setMouse(-sceneHeight/2, sceneHeight/2);
 
 let icoMesh = base.getNormalIco(2,2, 0xfc475b);
 
-
+icoMesh.scale.set(0.001,0.001,0.001)
 
 scene.add(icoMesh);
 
@@ -44,19 +44,40 @@ function sphereBounceAni(mesh){
     };
 
     let end = {
-        scale: 1
+        scale: 0.5
     }
 
-    new TWEEN.Tween(start)
-        .to(end, 1000)
-        .easing(TWEEN.Easing.Bounce.Out)
+    let t1 = new TWEEN.Tween(start)
+        .to(end, 600)
+        .easing(TWEEN.Easing.Sinusoidal.In)
         .onUpdate(function(){
             // console.log(this.scale)
             icoMesh.scale.x = this.scale;
             icoMesh.scale.y = this.scale;
             icoMesh.scale.z = this.scale;
         })
-        .start();
+
+
+    let t2 = new TWEEN.Tween({s:0.5})
+        .to({s:1}, 1500)
+        .easing(TWEEN.Easing.Elastic.Out)
+        .onUpdate(function(){
+            let {s} = this;
+
+            icoMesh.scale.set(s,s,s)
+        })
+
+    t1.chain(t2);
+    t1.start();
+
+}
+sphereBounceAni(icoMesh);
+// icoRotate(mesh);
+
+function icoRotate(mesh){
+    mesh.rotation.y -= 0.002;
+    mesh.rotation.x -= 0.002;
+    mesh.rotation.z -= 0.002;
 }
 
 // let {normalIco1,normalIco3} = base.initSmallSphereScene(scene);
@@ -178,12 +199,12 @@ function animate(){
 }
 
 let time = 0;
-sphereBounceAni(icoMesh);
+
 function render(){
     let delta = clock.getDelta();
     trackballControls.update(delta);
 
-    // reAni(icoMeshes)
+    icoRotate(icoMesh);
     TWEEN.update();
 
     // normalIco1.position.x += Math.sin(time++/175)/180
@@ -194,6 +215,7 @@ function render(){
     renderer.render(scene, camera);
 }
 // render();
+
 animate();
 
 window.addEventListener( 'resize', onWindowResize, false );

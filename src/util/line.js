@@ -231,7 +231,9 @@ group.position.z = -600;
 
 setTimeout(elt=>{
     scaLine();
-}, 2500)
+}, 200)
+
+// scaLine();
 
 function scaLine(){
     let start = {

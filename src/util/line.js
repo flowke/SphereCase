@@ -28,6 +28,9 @@ var effectController = {
     particleCount: f_icoVec.length
 };
 
+let sceneWidth = window.innerWidth>1200 ? window.innerWidth : 1200,
+    sceneHeight = 822;
+
 var maxParticleCount = f_icoVec.length;
 // particleCount = effectController.particleCount;
 
@@ -47,11 +50,12 @@ function initGUI() {
         particles.setDrawRange( 0, particleCount );
     });
 }
+
 function init() {
     // initGUI();
     container = document.getElementById('lineSphere');
     //
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1000, 1800 );
+    camera = new THREE.PerspectiveCamera( 45, sceneWidth / sceneHeight, 1000, 1800 );
     camera.position.z = 1750;
     // controls = new THREE.OrbitControls( camera, container );
     scene = new THREE.Scene();
@@ -130,7 +134,7 @@ function init() {
     //
     renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( sceneWidth, sceneHeight );
     renderer.setClearColor(0x000000, 0.0);
     renderer.gammaInput = true;
     renderer.gammaOutput = true;
@@ -146,9 +150,15 @@ function init() {
 
 
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    let w = window.innerWidth;
+
+    if(w<1200){
+        return;
+    }
+
+    camera.aspect = w / 822;
     camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( w, 822 );
 }
 
 function animate() {

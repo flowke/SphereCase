@@ -21,7 +21,7 @@ var aA=null; //  a节点
 var oDiv=document.getElementById('fontSphere');
 let per;
 
-let sa, ca ,sb ,cb ,sc ,cc;
+let sa, ca ,sb ,cb ,sc ,cc ;
 
 let items = ['js原理', '正则表达式', '反倒是', '电风扇水电费', '发短信无法', '富兰克林', '妇女节老师', '反对虐杀', 'vwfsfdfsf'];
 items = items.concat(items,items,items,items);

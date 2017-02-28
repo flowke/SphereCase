@@ -9,9 +9,14 @@
     <style>
 
         body, html{height: 100%; width: 100%; margin: 0;  font-family: 'Microsoft YaHei'}
-        #root{ width: 100%; height: 100%;}
-        #root img{width: 100%; height: 100%;}
-        canvas, #fontSphere, #fontEmitter{position: absolute; margin: 0; left: 0; top:0; bottom:0; right: 0;}
+        #aniRoot{ position: relative; width: 100%; height: 100%; }
+        #aniRoot img{width: 100%; height: 100%; }
+
+        #sphere, #lineSphere{ width: 100%; height: 822px; position: absolute; margin: auto;; left: 0; top:0; bottom:0; right: 0;}
+        /*#sphere img{width: 100%; height: 100%;}*/
+        canvas, #fontSphere, {position: absolute; margin: auto; left: 0; top:0; bottom:0; right: 0;}
+
+        #fontEmitter{position: absolute; left: 60%; top: 0; width: 300px; height: 300px;}
 
         #fontSphere{opacity: 0; font-size: 12px; }
 
@@ -122,65 +127,25 @@
         }
 
     </style>
-    <script type="x-shader/x-vertex" id="vertexShader">
-        uniform float amplitude;
 
-        attribute vec3 displacement;
-        attribute vec3 faceCenters;
-        attribute vec3 customColor;
-
-        varying vec3 vColor;
-        varying vec3 vNormal;
-
-        void main(){
-            vNormal = normal;
-            vColor = customColor;
-
-            vec3 newPos = + normal*amplitude*displacement;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4( newPos, 1.0 );
-        }
-
-    </script>
-
-    <script type="x-shader/x-fragment" id="fragmentShader">
-
-        varying vec3 vColor;
-        varying vec3 vNormal;
-
-
-        void main(){
-
-            const float ambient = 0.4;
-
-            vec3 light = vec3( 1.0 );
-			light = normalize( light );
-            float directional = max( dot( vNormal, light ), 0.0 );
-
-            gl_FragColor = vec4( vColor, 1.0 );
-        }
-    </script>
 </head>
 <body>
 
-<div id="root">
+<div id="aniRoot">
     <img src="assets/bg.jpg" alt="">
+    <div id="sphere"></div>
+    <div id="lineSphere"></div>
+    <div id="fontSphere">
+        <!-- <div class="fsContain">
+            <div class="fsControl"></div>
+        </div> -->
+    </div>
+    <div id="fontEmitter" class="stage">
+        <div class="container ca"></div>
+        <div class="container cb"></div>
+    </div>
 </div>
 
-
-
-
-<div id="sphere"></div>
-<div id="lineSphere"></div>
-<div id="fontSphere">
-    <!-- <div class="fsContain">
-        <div class="fsControl"></div>
-    </div> -->
-
-</div>
-<div id="fontEmitter" class="stage">
-    <div class="container ca"></div>
-    <div class="container cb"></div>
-</div>
 <script src="assets/three.min.js"></script>
 <script src="assets/TrackballControls.js"></script>
 <script src="assets/CanvasRenderer.js"></script>
